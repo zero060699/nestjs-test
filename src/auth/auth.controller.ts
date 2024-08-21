@@ -1,4 +1,10 @@
-import { Controller, Post, Body , HttpException, HttpStatus} from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -11,7 +17,10 @@ export class AuthController {
       body.password,
     );
     if (!user) {
-      throw new HttpException({ message: 'invalid user or password' }, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        { message: 'invalid user or password' },
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return this.authService.login(user);
   }

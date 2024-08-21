@@ -1,8 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, ValidationPipe, UseGuards} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpException,
+  HttpStatus,
+  ValidationPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+// import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtKeyAuthGuard } from 'src/auth-keycloak/jwt-auth.guard';
 import { plainToInstance } from 'class-transformer';
 import { User } from './entities/user.entity';
 
@@ -20,13 +33,13 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
+  @UseGuards(JwtKeyAuthGuard)
   findAll() {
     return this.usersService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtKeyAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
@@ -36,7 +49,7 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtKeyAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
@@ -46,7 +59,7 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtKeyAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
