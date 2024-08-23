@@ -14,8 +14,8 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { JwtKeyAuthGuard } from 'src/auth-keycloak/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtKeyAuthGuard } from '../auth-keycloak/jwt-auth.guard';
 import { plainToInstance } from 'class-transformer';
 import { User } from './entities/user.entity';
 
@@ -33,13 +33,17 @@ export class UsersController {
     }
   }
 
-  @Get()
   @UseGuards(JwtKeyAuthGuard)
+  @Get()
   findAll() {
-    return this.usersService.findAll();
+    try {
+      return this.usersService.findAll();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
-  @UseGuards(JwtKeyAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
@@ -49,7 +53,7 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtKeyAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
@@ -59,7 +63,7 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtKeyAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
@@ -70,6 +74,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete()
   async removeall() {
     await this.usersService.removeall();
