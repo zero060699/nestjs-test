@@ -53,7 +53,7 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtKeyAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
@@ -63,7 +63,7 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtKeyAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
@@ -74,7 +74,7 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtKeyAuthGuard)
   @Delete()
   async removeall() {
     await this.usersService.removeall();

@@ -1,4 +1,9 @@
-import { Injectable, CanActivate, UnauthorizedException,ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  UnauthorizedException,
+  ExecutionContext,
+} from '@nestjs/common';
 import { AuthKeycloakService } from './auth-keycloak.service';
 
 @Injectable()
