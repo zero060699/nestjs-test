@@ -25,11 +25,11 @@ export class AuthKeycloakService {
   }
 
   async verifyToken(token: string): Promise<any> {
-    const publicKey = `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzpRQF+b5f350WtrAVtqqdxqoVWnWs9YtEbwAlp8yDFAz92iCBqNtg/08WE72PUB5pVHXqZJiYSXET/TzIUsZvuthIwi5+otG7BdI09/L8mvWhWKtcXvQr39tP8ef0xU/+q/W67oxLMK2AM11xsdRwTk9hc1ZgHMa1rk7hGEGTIFiyScF1etn9L7bHvU/6z4HTbY9LievCQacYQxlOzEW0GgIXFGwjnMHig70RhSPcz3JWRw4cJ2h1nvB8w0Pgioi/LZGz265cjnF6mZqpAupDU0ibZ9/j4xGbEJjw6RQje0SIgFmb7azqZdLrg8xRiCS7+F7PAajZ7udJHiP8m+c+QIDAQAB
------END PUBLIC KEY-----`;
+    const publicKey = `-----BEGIN PUBLIC KEY-----\n${this.configService.get<string>('KEYCLOAK_PUBLIC_KEY')}\n-----END PUBLIC KEY-----`;
+    console.log('publicKey', publicKey);
     try {
       const decode = jwt.verify(token, publicKey, { algorithms: ['RS256'] });
+      console.log('decode', decode);
       return decode;
     } catch (error) {
       throw new UnauthorizedException(error.message, 'Invalid token');

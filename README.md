@@ -30,7 +30,12 @@
 
 ```bash
 $ npm install
+
 ```
+
+## Change name .env.example -> .env
+Change info in .env
+
 
 ## Compile and run the project
 

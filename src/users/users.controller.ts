@@ -15,9 +15,6 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { JwtKeyAuthGuard } from '../auth-keycloak/jwt-auth.guard';
-import { plainToInstance } from 'class-transformer';
-import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -26,14 +23,14 @@ export class UsersController {
   @Post()
   async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
     try {
-      const user = await this.usersService.create(createUserDto);
-      return plainToInstance(User, user, { excludeExtraneousValues: true });
+      await this.usersService.create(createUserDto);
+      return { message: 'Create user successful' };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  @UseGuards(JwtKeyAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     try {
@@ -53,17 +50,18 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtKeyAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
-      return await this.usersService.update(+id, updateUserDto);
+      await this.usersService.update(+id, updateUserDto);
+      return { message: 'Update successful' };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  @UseGuards(JwtKeyAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
@@ -74,7 +72,7 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtKeyAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete()
   async removeall() {
     await this.usersService.removeall();

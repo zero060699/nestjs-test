@@ -61,7 +61,6 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('user not found');
     }
-    user.password = await bcrypt.hash(updateUserDto.password, salt);
     const { username, email } = updateUserDto;
     const existingUserByUsername = await this.userRepository.findOneBy({ username });
     if (existingUserByUsername) {
@@ -71,7 +70,8 @@ export class UsersService {
     if (existingUserByEmail) {
       throw new ConflictException('Email already exists');
     }
-    await this.userRepository.update({ id }, updateUserDto);
+    user.password = await bcrypt.hash(updateUserDto.password, salt);
+    await this.userRepository.update({ id }, user);
     return user;
   }
 

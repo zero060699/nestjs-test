@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
-// import { AuthModule } from './auth/auth.module';
-import { AuthKeycloakModule } from './auth-keycloak/auth-keycloak.module';
+import { AuthModule } from './auth/auth.module';
+// import { AuthKeycloakModule } from './auth-keycloak/auth-keycloak.module';
 
 @Module({
   imports: [
@@ -14,8 +14,8 @@ import { AuthKeycloakModule } from './auth-keycloak/auth-keycloak.module';
     }),
     DatabaseModule,
     UsersModule,
-    // AuthModule,
-    AuthKeycloakModule,
+    AuthModule,
+    // AuthKeycloakModule,
   ],
   controllers: [AppController],
   providers: [AppService],
